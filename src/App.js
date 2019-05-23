@@ -18,7 +18,7 @@ class App extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const unformatted = this.state.amount;
-    let money = parseInt(unformatted.replace(/Rp|\.|\s+/g, ''));
+    let money = parseInt(unformatted.replace(/Rp|\./g, ''));
 
     if (isNaN(parseInt(unformatted[unformatted.length -1])) && !isNaN(money)) {
       this.setState({
@@ -28,7 +28,7 @@ class App extends React.Component {
       });
     } else {
 
-      if (unformatted.includes(',')) {
+      if (unformatted.includes(',') || unformatted.includes(' ')) {
         this.setState({
           ...this.state,
           error: 'Invalid separator!',
