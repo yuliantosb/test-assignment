@@ -18,9 +18,10 @@ class App extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const unformatted = this.state.amount;
-    let money = parseInt(unformatted.replace(/Rp|\./g, ''));
+    let money = unformatted.replace(/[A-Z a-z]|[^\s+]*\s+|\./g, '').replace(/,([^,]).$/g, '.');
+    console.log(money);
 
-    if (isNaN(parseInt(unformatted[unformatted.length -1])) && !isNaN(money)) {
+    if (isNaN(parseFloat(unformatted[unformatted.length -1])) && !isNaN(parseFloat(money))) {
       this.setState({
         ...this.state,
         error: 'Valid character in wrong position',
@@ -28,15 +29,17 @@ class App extends React.Component {
       });
     } else {
 
-      if (unformatted.includes(',') || unformatted.includes(' ')) {
+      if (money.includes(',') || money.includes(' ')) {
         this.setState({
           ...this.state,
           error: 'Invalid separator!',
           result: []
         });
+
       } else {
         if (!isNaN(money)) {
-         
+          
+          money = parseFloat(money);
           const amounts = this.props.amounts;
           const result = amounts.map(v => {
             if (money % v < money) {
